@@ -188,7 +188,7 @@ class AuthController extends Controller
                 }
             }
             if(count($validScopes) < 1) {
-                return response()->json(['error' => 'Unauthorised'], 401);
+                return response()->json(['error' => 'Unauthorised', 'roles' => $roles], 401);
             }
         }
 
