@@ -21,7 +21,8 @@ class UserRole {
     protected static $roleHierarchy = [
         self::admin => ['*'],
         self::coordinator => [
-            self::tutor
+            self::tutor,
+            self::student
         ],
         self::tutor => [
             self::student
