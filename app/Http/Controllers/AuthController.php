@@ -8,6 +8,7 @@ use App\User;
 use App\Role;
 use Validator;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 
 class AuthController extends Controller
 {
@@ -107,7 +108,7 @@ $scopes = ['tutor'];
 
         $client = new Client();
         $apiResponse = $client->post('https://markit.mijdas.com/api/user', [
-            GuzzleHttp\RequestOptions::JSON => [
+            RequestOptions::JSON => [
                 'request' => 'SIGN_UP',
                 'username' => $request->get('username'),
                 'password' => $request->get('password'),
