@@ -160,7 +160,7 @@ class AuthController extends Controller
     }
 
     public function checkToken(Request $request) {
-        // return response()->json(['request' => $request], 200);
+        return response()->json(['request' => $request-bearerToken()], 200);
 //         $input = $request->all();
 //         $validator = Validator::make($input, [
 // //            'token' => 'required',
