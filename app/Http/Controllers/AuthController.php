@@ -21,7 +21,7 @@ class AuthController extends Controller
             //'email' => 'required|email',
             'password' => 'required',
             'username' => 'required',
-            'scopes' => 'required',
+//            'scopes' => 'required',
         ]);
 
         if($validator->fails()) {
@@ -32,8 +32,9 @@ class AuthController extends Controller
 
         if(Auth::attempt($credentials)) {
             $user = Auth::user();
-            $scopes = $request->only(['scopes'])['scopes'];
-            $scopes = explode(" ", $scopes);
+//            $scopes = $request->only(['scopes'])['scopes'];
+//            $scopes = explode(" ", $scopes);
+$scopes = ['tutor'];
             $role_checker = new Role\RoleChecker();
             $scopes_valid = true;
             for($i = 0; $i < count($scopes); $i++) {
@@ -81,6 +82,10 @@ class AuthController extends Controller
     	$success['name'] = $user->name;
     	$success['token'] = $user->createToken('MyApp', [$request->scopes])->accessToken;
     	return response()->json(['success' => $success], 200);
+    }
+
+    public function registerUser(Request $request) {
+        
     }
 
     public function checkToken(Request $request) {

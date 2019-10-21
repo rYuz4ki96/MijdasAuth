@@ -1,6 +1,6 @@
 apps:
     - script: 'artisan'
       name: 'oauth'
-      cwd: '/var/www/blog'
+      cwd: '/var/www/accounts'
       args: 'serve --port=8000'
       interpreter: 'php'
