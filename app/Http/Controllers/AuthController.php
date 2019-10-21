@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 use Validator;
+use GuzzleHttp\Client;
 
 class AuthController extends Controller
 {
@@ -57,7 +58,7 @@ $scopes = ['tutor'];
      *
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
+    public function registerOld(Request $request)
     {
     	$input = $request->all();
     	$validator = Validator::make($input, [
@@ -84,8 +85,53 @@ $scopes = ['tutor'];
     	return response()->json(['success' => $success], 200);
     }
 
-    public function registerUser(Request $request) {
+    public function register(Request $request) {
+    	$input = $request->all();
+    	$validator = Validator::make($input, [
+    		'name' => 'required',
+		'email' => 'required|email',
+		'username' => 'required',
+		'password' => 'required',
+		'c_password' => 'required|same:password',
+		'scopes' => 'required',
+    	]);
+    	if ($validator->fails()) {
+    		
+    		return response()->json($validator->errors(), 417);
+        }
         
+        $username = $request->only(['username'])['username'];
+        if(User::where('username', '=', $username)->exists()) {
+            return response()->json(['error' => 'Username is taken'], 417);
+        }
+
+        $client = new Client();
+        $apiResponse = $client->post('https://markit.mijdas.com/api/user', [
+            GuzzleHttp\RequestOptions::JSON => [
+                'request' => 'SIGN_UP',
+                'username' => $request->get('username'),
+                'password' => $request->get('password'),
+                'email' => $request->get('email'),
+                'firstName' => $request->get('name'),
+                'lastName' => $request->get('name'),
+                'permissionType' => $request->get('scopes'),
+            ]
+        ]);
+
+        if($apiResponse->getStatusCode() != 200) {
+            return response()->json(['error' => 'Username is taken, or another error occurred'], 417);
+        }
+
+    	$user = User::create([
+    		'name' => $request->name,
+    		'email' => $request->email,
+		'username' => $request->username,
+    		'password' => bcrypt($request->password),
+		'roles' => json_encode(explode(" ", $request->scopes)),
+    	]);
+    	$success['name'] = $user->name;
+    	$success['token'] = $user->createToken('MyApp', [$request->scopes])->accessToken;
+    	return response()->json(['success' => $success], 200);
     }
 
     public function checkToken(Request $request) {
