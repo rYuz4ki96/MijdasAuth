@@ -9,6 +9,7 @@ use App\Role;
 use Validator;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use GuzzleHttp\Exception\ClientException;
 
 class AuthController extends Controller
 {
@@ -118,17 +119,21 @@ $scopes = ['tutor'];
         //         'permissionType' => $request->get('scopes')
         //     ]
         // ]);
-        $apiResponse = $client->request('POST', 'https://markit.mijdas.com/api/user/', [
-            'json' => [
-                'request' => 'SIGN_UP',
-                'username' => $request->get('username'),
-                'password' => $request->get('password'),
-                'email' => $request->get('email'),
-                'firstName' => $request->get('name'),
-                'lastName' => $request->get('name'),
-                'permissionType' => $request->get('scopes')
-            ]
-        ]);
+        try {
+            $apiResponse = $client->request('POST', 'https://markit.mijdas.com/api/user/', [
+                'json' => [
+                    'request' => 'SIGN_UP',
+                    'username' => $request->get('username'),
+                    'password' => $request->get('password'),
+                    'email' => $request->get('email'),
+                    'firstName' => $request->get('name'),
+                    'lastName' => $request->get('name'),
+                    'permissionType' => $request->get('scopes')
+                ]
+            ]);
+        } catch(ClientException $exception) {
+            return response()->json(['error' => 'Username is taken, or another error occurred'], 417);
+        }
 
         if($apiResponse->getStatusCode() != 200) {
             return response()->json(['error' => 'Username is taken, or another error occurred'], 417);
