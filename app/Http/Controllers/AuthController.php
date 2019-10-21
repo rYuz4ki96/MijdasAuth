@@ -184,7 +184,7 @@ class AuthController extends Controller
             $roles = Role\UserRole::getRoleList();
             foreach($roles as $key => $value) {
                 if($request->user('api')->tokenCan($key)) {
-                    array_push($validScopes[], $key);
+                    array_push($validScopes, $key);
                 }
             }
             if(count($validScopes) < 1) {
