@@ -118,7 +118,7 @@ $scopes = ['tutor'];
         //         'permissionType' => $request->get('scopes')
         //     ]
         // ]);
-        $apiResponse = $client->request('POST', 'https://markit.mijdas.com/api/user', [
+        $apiResponse = $client->request('POST', 'https://markit.mijdas.com/api/user/', [
             // 'json' => [
             //     'request' => 'SIGN_UP',
             //     'username' => $request->get('username'),
