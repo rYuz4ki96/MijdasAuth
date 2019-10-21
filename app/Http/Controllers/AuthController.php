@@ -177,17 +177,17 @@ class AuthController extends Controller
                 }
             }
         } else {
-            $scopes = $request->user('api')->getRoles();
-            $validScopes = [];
+            // $scopes = $request->user('api')->getRoles();
+            $scopes = [];
             // $role_checker = new Role\RoleChecker();
             // for($i = 0; $i < count($scopes); $i++) {
             $roles = Role\UserRole::getRoleList();
             foreach($roles as $key => $value) {
                 if($request->user('api')->tokenCan($key)) {
-                    array_push($validScopes, $key);
+                    array_push($scopes, $key);
                 }
             }
-            if(count($validScopes) < 1) {
+            if(count($scopes) < 1) {
                 return response()->json(['error' => 'Unauthorised', 'roles' => $roles], 401);
             }
         }
