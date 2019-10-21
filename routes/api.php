@@ -22,14 +22,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('admin_register', 'AuthController@adminRegister');
 Route::post('admin_login', 'AuthController@adminLogin');
 //Route::group(['middleware' => 'auth:api'], function() {
-Route::middleware(['auth:api', 'scopes:tutor'])->group( function() {
-	Route::post('coordinator_register', 'AuthController@coordinatorRegister');
-	Route::post('check_token', 'AuthController@checkToken');	
+Route::middleware(['auth:api', 'scopes:admin'])->group( function() {
+    Route::post('coordinator_register', 'AuthController@coordinatorRegister');
 });
 
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
-// Route::post('check_token', 'AuthController@checkToken');
+Route::post('check_token', 'AuthController@checkToken');
 
 /*
 Route::group(['middleware' => 'auth:api'], function() {
