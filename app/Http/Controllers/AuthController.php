@@ -68,32 +68,32 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function registerOld(Request $request)
-    {
-    	$input = $request->all();
-    	$validator = Validator::make($input, [
-    		'name' => 'required',
-		'email' => 'required|email',
-		'username' => 'required',
-		'password' => 'required',
-		'c_password' => 'required|same:password',
-		'scopes' => 'required',
-    	]);
-    	if ($validator->fails()) {
+    // public function registerOld(Request $request)
+    // {
+    // 	$input = $request->all();
+    // 	$validator = Validator::make($input, [
+    // 		'name' => 'required',
+	// 	'email' => 'required|email',
+	// 	'username' => 'required',
+	// 	'password' => 'required',
+	// 	'c_password' => 'required|same:password',
+	// 	'scopes' => 'required',
+    // 	]);
+    // 	if ($validator->fails()) {
     		
-    		return response()->json($validator->errors(), 417);
-    	}
-    	$user = User::create([
-    		'name' => $request->name,
-    		'email' => $request->email,
-		'username' => $request->username,
-    		'password' => bcrypt($request->password),
-		'roles' => json_encode(explode(" ", $request->scopes)),
-    	]);
-    	$success['name'] = $user->name;
-    	$success['token'] = $user->createToken('MyApp', [$request->scopes])->accessToken;
-    	return response()->json(['success' => $success], 200);
-    }
+    // 		return response()->json($validator->errors(), 417);
+    // 	}
+    // 	$user = User::create([
+    // 		'name' => $request->name,
+    // 		'email' => $request->email,
+	// 	'username' => $request->username,
+    // 		'password' => bcrypt($request->password),
+	// 	'roles' => json_encode(explode(" ", $request->scopes)),
+    // 	]);
+    // 	$success['name'] = $user->name;
+    // 	$success['token'] = $user->createToken('MyApp', [$request->scopes])->accessToken;
+    // 	return response()->json(['success' => $success], 200);
+    // }
 
     public function register(Request $request) {
     	$input = $request->all();
@@ -160,104 +160,107 @@ class AuthController extends Controller
     }
 
     public function checkToken(Request $request) {
-        $input = $request->all();
-        $validator = Validator::make($input, [
-//            'token' => 'required',
-            'scopes' => 'required',
-        ]);
-        if($validator->fails()) {
-            return response()->json($validator->errors(), 417);
+//         $input = $request->all();
+//         $validator = Validator::make($input, [
+// //            'token' => 'required',
+//             'scopes' => 'required',
+//         ]);
+//         if($validator->fails()) {
+//             return response()->json($validator->errors(), 417);
+//         }
+        if($request->has('scopes')) {
+            $scopes = $request->only('scopes')['scopes'];
+            $scopes = explode(" ", $scopes);
+        } else {
+            $scopes = $request->user('api')->getRoles();
         }
-
-        $scopes = $request->only('scopes')['scopes'];
-        $scopes = explode(" ", $scopes);
         for($i = 0; $i < count($scopes); $i++) {
             if(!$request->user('api')->tokenCan($scopes[$i])) {
                 return response()->json(['error' => 'Unauthorised'], 401);
             }
         }
 
-        return response()->json(['success' => 'Authorised', 'scopes' => $scopes], 200);
+        return response()->json(['status' => 'Authorised', 'scopes' => $scopes], 200);
     }
 
-    /**
-	 * admin login API
-	 * @return \Illuminate\Http\Response
-	 */
-	public function adminLogin(Request $request)
-	{
-		$input = $request->all();
-		$validator = Validator::make($input, [
-			//'email' => 'required|email',
-			'password' => 'required',
-                        'username' => 'required',
-		]);
-		if ($validator->fails()) {
+    // /**
+	//  * admin login API
+	//  * @return \Illuminate\Http\Response
+	//  */
+	// public function adminLogin(Request $request)
+	// {
+	// 	$input = $request->all();
+	// 	$validator = Validator::make($input, [
+	// 		//'email' => 'required|email',
+	// 		'password' => 'required',
+    //                     'username' => 'required',
+	// 	]);
+	// 	if ($validator->fails()) {
 			
-			return response()->json($validator->errors(), 417);
-		}
-		$credentials = $request->only(['username', 'password']);
-		if (Auth::attempt($credentials)) {
+	// 		return response()->json($validator->errors(), 417);
+	// 	}
+	// 	$credentials = $request->only(['username', 'password']);
+	// 	if (Auth::attempt($credentials)) {
 			
-			$user = Auth::user();
-			$success['token'] = $user->createToken('MyApp', ['*'])->accessToken;
-			return response()->json(['success' => $success], 200);
-		}
-		else {
-			return response()->json(['error' => 'Unauthorized'], 401);
-		}
-	}
-	/**
-	 * admin register API
-	 * @return \Illuminate\Http\Response
-	 */
-	public function adminRegister(Request $request)
-	{
-		$validator = Validator::make($request->all(), [
-			'name' => 'required',
-			'email' => 'required|email',
-			'password' => 'required',
-			'c_password' => 'required|same:password',
-                        'username' => 'required',
-		]);
-		if ($validator->fails()) {
+	// 		$user = Auth::user();
+	// 		$success['token'] = $user->createToken('MyApp', ['*'])->accessToken;
+	// 		return response()->json(['success' => $success], 200);
+	// 	}
+	// 	else {
+	// 		return response()->json(['error' => 'Unauthorized'], 401);
+	// 	}
+	// }
+	// /**
+	//  * admin register API
+	//  * @return \Illuminate\Http\Response
+	//  */
+	// public function adminRegister(Request $request)
+	// {
+	// 	$validator = Validator::make($request->all(), [
+	// 		'name' => 'required',
+	// 		'email' => 'required|email',
+	// 		'password' => 'required',
+	// 		'c_password' => 'required|same:password',
+    //                     'username' => 'required',
+	// 	]);
+	// 	if ($validator->fails()) {
 			
-			return response()->json($validator->errors(), 417);
-		}
-		$user = User::create([
-			'name' => $request->name,
-			'email' => $request->email,
-			'password' => bcrypt($request->password),
-                        'username' => $request->username,
-                        'roles' => json_encode(['*']),
-		]);
-		$success['name'] = $user->name;
-		$success['token'] = $user->createToken('MyApp', ['*'])->accessToken;
-		return response()->json(['success' => $success], 200);
-	}
+	// 		return response()->json($validator->errors(), 417);
+	// 	}
+	// 	$user = User::create([
+	// 		'name' => $request->name,
+	// 		'email' => $request->email,
+	// 		'password' => bcrypt($request->password),
+    //                     'username' => $request->username,
+    //                     'roles' => json_encode(['*']),
+	// 	]);
+	// 	$success['name'] = $user->name;
+	// 	$success['token'] = $user->createToken('MyApp', ['*'])->accessToken;
+	// 	return response()->json(['success' => $success], 200);
+	// }
 
-        public function coordinatorRegister(Request $request)
-        {
-                $validator = Validator::make($request->all(), [
-                        'name' => 'required',
-                        'email' => 'required|email',
-                        'password' => 'required',
-                        'c_password' => 'required|same:password',
-                        'username' => 'required',
-                ]);
-                if ($validator->fails()) {
+    //     public function coordinatorRegister(Request $request)
+    //     {
+    //             $validator = Validator::make($request->all(), [
+    //                     'name' => 'required',
+    //                     'email' => 'required|email',
+    //                     'password' => 'required',
+    //                     'c_password' => 'required|same:password',
+    //                     'username' => 'required',
+    //             ]);
+    //             if ($validator->fails()) {
 
-                        return response()->json($validator->errors(), 417);
-                }
-                $user = User::create([
-                        'name' => $request->name,
-                        'email' => $request->email,
-                        'password' => bcrypt($request->password),
-                        'username' => $request->username,
-                        'roles' => json_encode(['ROLE_COORDINATOR']),
-                ]);
-                $success['name'] = $user->name;
-                //$success['token'] = $user->createToken('MyApp', ['*'])->accessToken;
-                return response()->json(['success' => $success], 200);
-        }
+    //                     return response()->json($validator->errors(), 417);
+    //             }
+    //             $user = User::create([
+    //                     'name' => $request->name,
+    //                     'email' => $request->email,
+    //                     'password' => bcrypt($request->password),
+    //                     'username' => $request->username,
+    //                     'roles' => json_encode(['ROLE_COORDINATOR']),
+    //             ]);
+    //             $success['name'] = $user->name;
+    //             //$success['token'] = $user->createToken('MyApp', ['*'])->accessToken;
+    //             return response()->json(['success' => $success], 200);
+    //     }
 }
