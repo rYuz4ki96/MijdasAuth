@@ -37,18 +37,26 @@ class AuthController extends Controller
             $user = Auth::user();
 //            $scopes = $request->only(['scopes'])['scopes'];
 //            $scopes = explode(" ", $scopes);
-$scopes = ['tutor'];
-            $role_checker = new Role\RoleChecker();
-            $scopes_valid = true;
-            for($i = 0; $i < count($scopes); $i++) {
-                if(!$role_checker->check($user, $scopes[$i])) $scopes_valid = false;
-            }
-//            if($role_checker->check($user, $scopes)) {
-            if($scopes_valid) {
+// $scopes = ['tutor'];
+            if($request->has('scopes')) {
+                $scopes = $request->only(['scopes'])['scopes'];
+                $scopes = explode(" ", $scopes);
+                $role_checker = new Role\RoleChecker();
+                $scopes_valid = true;
+                for($i = 0; $i < count($scopes); $i++) {
+                    if(!$role_checker->check($user, $scopes[$i])) $scopes_valid = false;
+                }
+    //            if($role_checker->check($user, $scopes)) {
+                if($scopes_valid) {
+                    $success['token'] = $user->createToken('MyApp', $scopes)->accessToken;
+                    return response()->json(['success' => $success], 200);
+                } else {
+                    return response()->json(['error' => 'Unauthorised'], 401);
+                }
+            } else {
+                $scopes = $user->getRoles();
                 $success['token'] = $user->createToken('MyApp', $scopes)->accessToken;
                 return response()->json(['success' => $success], 200);
-            } else {
-                return response()->json(['error' => 'Unauthorised'], 401);
             }
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
