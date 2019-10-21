@@ -9,7 +9,7 @@ use App\Role;
 use Validator;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use GuzzleHttp\Exception;
+use GuzzleHttp\Exception\BadResponseException;
 
 class AuthController extends Controller
 {
@@ -131,7 +131,7 @@ $scopes = ['tutor'];
                     'permissionType' => $request->get('scopes')
                 ]
             ]);
-        } catch(Exception $exception) {
+        } catch(BadResponseException $exception) {
             return response()->json(['error' => 'Username is taken, or another error occurred'], 417);
         }
 
