@@ -1,0 +1,33 @@
+Laravel development server started: <http://127.0.0.1:8000>
+[Sat Oct 19 16:06:38 2019] 127.0.0.1:45772 [200]: /favicon.ico
+Laravel development server started: <http://127.0.0.1:8000>
+[Sat Oct 19 16:06:57 2019] 127.0.0.1:45780 [200]: /favicon.ico
+[Sat Oct 19 16:08:54 2019] 127.0.0.1:45792 [200]: /favicon.ico
+Laravel development server started: <http://127.0.0.1:8001>
+[Sat Oct 19 17:37:11 2019] 127.0.0.1:35652 [200]: /favicon.ico
+[Sat Oct 19 17:37:12 2019] 127.0.0.1:35656 [200]: /favicon.ico
+[Sat Oct 19 17:37:14 2019] 127.0.0.1:35662 [200]: /favicon.ico
+[Sat Oct 19 17:37:16 2019] 127.0.0.1:35666 [200]: /favicon.ico
+[Sat Oct 19 17:37:16 2019] 127.0.0.1:35670 [200]: /favicon.ico
+[Sat Oct 19 17:37:17 2019] 127.0.0.1:35674 [200]: /favicon.ico
+[Sat Oct 19 17:37:17 2019] 127.0.0.1:35678 [200]: /favicon.ico
+[Sat Oct 19 17:37:18 2019] 127.0.0.1:35682 [200]: /favicon.ico
+[Sat Oct 19 17:37:18 2019] 127.0.0.1:35686 [200]: /favicon.ico
+[Sat Oct 19 17:37:18 2019] 127.0.0.1:35690 [200]: /favicon.ico
+[Sat Oct 19 17:37:19 2019] 127.0.0.1:35694 [200]: /favicon.ico
+[Sat Oct 19 17:37:19 2019] 127.0.0.1:35698 [200]: /favicon.ico
+[Sat Oct 19 17:37:19 2019] 127.0.0.1:35702 [200]: /favicon.ico
+[Sat Oct 19 17:37:51 2019] 127.0.0.1:35712 [200]: /favicon.ico
+[Sat Oct 19 17:37:53 2019] 127.0.0.1:35716 [200]: /favicon.ico
+[Sat Oct 19 17:39:07 2019] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /var/www/blog/app/Http/Controllers/AuthController.php on line 39
+[Sat Oct 19 17:40:11 2019] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /var/www/blog/app/Http/Controllers/AuthController.php on line 39
+[Sat Oct 19 17:41:02 2019] 127.0.0.1:35880 [200]: /favicon.ico
+[Sat Oct 19 17:41:04 2019] 127.0.0.1:35884 [200]: /favicon.ico
+[Sat Oct 19 17:42:00 2019] 127.0.0.1:35974 [200]: /favicon.ico
+[Sat Oct 19 17:42:01 2019] 127.0.0.1:35980 [200]: /favicon.ico
+[Sat Oct 19 17:42:01 2019] 127.0.0.1:35986 [200]: /favicon.ico
+[Sat Oct 19 17:43:07 2019] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in /var/www/blog/app/Http/Controllers/AuthController.php on line 39
+[Sat Oct 19 17:43:07 2019] 127.0.0.1:35996 [200]: /favicon.ico
+Terminated
+Laravel development server started: <http://127.0.0.1:8002>
+Laravel development server started: <http://127.0.0.1:8003>
