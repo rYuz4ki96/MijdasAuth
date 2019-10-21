@@ -108,14 +108,14 @@ $scopes = ['tutor'];
 
         $client = new Client();
         $apiResponse = $client->post('https://markit.mijdas.com/api/user', [
-            RequestOptions::JSON => [
+            /*RequestOptions::JSON*/'json' => [
                 'request' => 'SIGN_UP',
                 'username' => $request->get('username'),
                 'password' => $request->get('password'),
                 'email' => $request->get('email'),
                 'firstName' => $request->get('name'),
                 'lastName' => $request->get('name'),
-                'permissionType' => $request->get('scopes'),
+                'permissionType' => $request->get('scopes')
             ]
         ]);
 
