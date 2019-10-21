@@ -171,11 +171,20 @@ class AuthController extends Controller
         if($request->has('scopes')) {
             $scopes = $request->only('scopes')['scopes'];
             $scopes = explode(" ", $scopes);
+            for($i = 0; $i < count($scopes); $i++) {
+                if(!$request->user('api')->tokenCan($scopes[$i])) {
+                    return response()->json(['error' => 'Unauthorised'], 401);
+                }
+            }
         } else {
             $scopes = $request->user('api')->getRoles();
-        }
-        for($i = 0; $i < count($scopes); $i++) {
-            if(!$request->user('api')->tokenCan($scopes[$i])) {
+            $validScopes = [];
+            for($i = 0; $i < count($scopes); $i++) {
+                if($request->user('api')->tokenCan($scopes[$i])) {
+                    array_push($validScopes[], $scopes[$i]);
+                }
+            }
+            if(count($validScopes) < 1) {
                 return response()->json(['error' => 'Unauthorised'], 401);
             }
         }
