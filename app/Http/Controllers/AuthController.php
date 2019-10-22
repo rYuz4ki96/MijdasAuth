@@ -55,9 +55,9 @@ class AuthController extends Controller
                 }
             } else {
                 $role = $user->getRoles();
-                $role_checker = new Role\RoleChecker();
+                $role_checker = new Role\UserRole();
                 $scopes = [$role];
-                $scopes = array_merge($scopes, $role_checker->getAllowedRoles($role));
+                $scopes = array_merge($scopes, Role\UserRole::getAllowedRoles($role));
                 $scopes = array_unique($scopes);
                 $success['token'] = $user->createToken('MyApp', $scopes)->accessToken;
                 return response()->json(['success' => $success], 200);
