@@ -54,10 +54,12 @@ class AuthController extends Controller
                     return response()->json(['error' => 'Unauthorised'], 401);
                 }
             } else {
-                $role = $user->getRoles();
+                $roles = $user->getRoles();
                 $role_checker = new Role\UserRole();
-                $scopes = [$role];
-                $scopes = array_merge($scopes, Role\UserRole::getAllowedRoles($role));
+                $scopes = $roles;
+                for($i = 0; $i < count($roles); $i++) {
+                    $scopes = array_merge($scopes, Role\UserRole::getAllowedRoles($roles[$i]));
+                }
                 $scopes = array_unique($scopes);
                 $success['token'] = $user->createToken('MyApp', $scopes)->accessToken;
                 return response()->json(['success' => $success], 200);
