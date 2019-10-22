@@ -54,7 +54,11 @@ class AuthController extends Controller
                     return response()->json(['error' => 'Unauthorised'], 401);
                 }
             } else {
-                $scopes = $user->getRoles();
+                $role = $user->getRoles();
+                $role_checker = new Role\RoleChecker();
+                $scopes = [$role];
+                $scopes = array_merge($scopes, $role_checker->getAllowedRoles($role));
+                $scopes = array_unique($scopes);
                 $success['token'] = $user->createToken('MyApp', $scopes)->accessToken;
                 return response()->json(['success' => $success], 200);
             }
