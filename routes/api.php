@@ -29,6 +29,7 @@ Route::middleware(['auth:api', 'scopes:admin'])->group( function() {
 Route::post('login', 'AuthController@login');
 Route::post('register', 'AuthController@register');
 Route::post('check_token', 'AuthController@checkToken');
+Route::post('register_old', 'AuthController@registerOld');
 
 /*
 Route::group(['middleware' => 'auth:api'], function() {
