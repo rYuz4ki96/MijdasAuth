@@ -74,32 +74,32 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function registerOld(Request $request)
-    // {
-    // 	$input = $request->all();
-    // 	$validator = Validator::make($input, [
-    // 		'name' => 'required',
-	// 	'email' => 'required|email',
-	// 	'username' => 'required',
-	// 	'password' => 'required',
-	// 	'c_password' => 'required|same:password',
-	// 	'scopes' => 'required',
-    // 	]);
-    // 	if ($validator->fails()) {
+    public function registerOld(Request $request)
+    {
+    	$input = $request->all();
+    	$validator = Validator::make($input, [
+    		'name' => 'required',
+		'email' => 'required|email',
+		'username' => 'required',
+		'password' => 'required',
+		'c_password' => 'required|same:password',
+		'scopes' => 'required',
+    	]);
+    	if ($validator->fails()) {
     		
-    // 		return response()->json($validator->errors(), 417);
-    // 	}
-    // 	$user = User::create([
-    // 		'name' => $request->name,
-    // 		'email' => $request->email,
-	// 	'username' => $request->username,
-    // 		'password' => bcrypt($request->password),
-	// 	'roles' => json_encode(explode(" ", $request->scopes)),
-    // 	]);
-    // 	$success['name'] = $user->name;
-    // 	$success['token'] = $user->createToken('MyApp', [$request->scopes])->accessToken;
-    // 	return response()->json(['success' => $success], 200);
-    // }
+    		return response()->json($validator->errors(), 417);
+    	}
+    	$user = User::create([
+    		'name' => $request->name,
+    		'email' => $request->email,
+		'username' => $request->username,
+    		'password' => bcrypt($request->password),
+		'roles' => json_encode(explode(" ", $request->scopes)),
+    	]);
+    	$success['name'] = $user->name;
+    	$success['token'] = $user->createToken('MyApp', [$request->scopes])->accessToken;
+    	return response()->json(['success' => $success], 200);
+    }
 
     public function register(Request $request) {
     	$input = $request->all();
