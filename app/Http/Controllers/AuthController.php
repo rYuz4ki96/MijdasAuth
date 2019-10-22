@@ -62,6 +62,7 @@ class AuthController extends Controller
                 }
                 $scopes = array_unique($scopes);
                 $success['token'] = $user->createToken('MyApp', $scopes)->accessToken;
+                $success['scopes'] = $scopes;
                 return response()->json(['success' => $success], 200);
             }
         } else {
